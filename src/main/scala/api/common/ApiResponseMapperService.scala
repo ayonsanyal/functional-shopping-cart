@@ -12,14 +12,12 @@ import io.circe.syntax._
 
 import scala.concurrent.ExecutionContext
 
-trait ApiResponseMapperService extends FailFastCirceSupport with ErrorMessages
-{
+trait ApiResponseMapperService extends FailFastCirceSupport with ErrorMessages {
 
-  def mapToApiResponse[A](serviceResult: ServiceResult[A],methodType:String)
-                         (implicit ec: ExecutionContext,encoder:Encoder[A]): Route =
+  def mapToApiResponse[A](serviceResult: ServiceResult[A], methodType: String)(implicit ec: ExecutionContext, encoder: Encoder[A]): Route =
     onComplete(serviceResult.value) {
-      case util.Success(Right(pure)) if methodType == "POST" => complete(ApiResponseSuccess[A](Created.intValue,pure.result.some).asJson)
-      case util.Success(Right(pure))  => complete(ApiResponseSuccess[A](OK.intValue, pure.result.some).asJson)
+      case util.Success(Right(pure)) if methodType == "POST" => complete(ApiResponseSuccess[A](Created.intValue, pure.result.some).asJson)
+      case util.Success(Right(pure)) => complete(ApiResponseSuccess[A](OK.intValue, pure.result.some).asJson)
 
       case util.Success(Left(error: ResultError)) => error.reason match {
         case error: ApiErrors.ValidationError => error match {
