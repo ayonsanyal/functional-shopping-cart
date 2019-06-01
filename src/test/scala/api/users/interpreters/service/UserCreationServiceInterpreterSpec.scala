@@ -22,6 +22,7 @@ class UserCreationServiceInterpreterTest
   val userService = new UserCreationServiceInterpreter(userRepo)
 
   behavior of "createUser"
+
   it should "return the ServiceResult with Pure value of User when success" in {
     (userRepo.createUser(_)).when(createUser).returns(Future.successful(Right(createUser)))
     val result = Await.result(userService.createUser(createUser).value, 20 seconds)

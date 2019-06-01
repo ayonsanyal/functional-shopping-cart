@@ -11,6 +11,7 @@ import scala.concurrent.ExecutionContext
 class UserCreationServiceInterpreter(repo: UserRepository[User])(implicit ec: ExecutionContext)
   extends UserCreationService
   with ResultToResponseService {
+
   override def createUser(user: User): ServiceResult[User] = EitherT {
     repo.createUser(user).map(transformResult[User])
   }
