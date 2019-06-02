@@ -7,7 +7,7 @@ import api.products.entities.ProductMetadata
 import api.products.interpreter.service.ProductServiceInterpreter
 import org.scalamock.scalatest.MockFactory
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 import concurrent.duration._
 
 class ProductServiceInterpreterSpec extends UnitSpec

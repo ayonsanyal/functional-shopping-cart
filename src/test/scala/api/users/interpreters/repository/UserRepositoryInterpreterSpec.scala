@@ -10,7 +10,7 @@ import concurrent.duration._
 
 class UserRepositoryInterpreterSpec
   extends UnitSpec
-    with UsersTestData {
+  with UsersTestData {
 
   import Input._
   import Output._

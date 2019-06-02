@@ -8,7 +8,7 @@ import scala.concurrent.Await
 import concurrent.duration._
 
 class ProductRepositoryInterpreterSpec extends UnitSpec
-with ProductsTestData{
+  with ProductsTestData {
 
   import Input._
   import Output._
@@ -22,7 +22,7 @@ with ProductsTestData{
     result shouldBe Right(addProduct)
   }
 
-  it should "Not allow addition of products in inmemory collection if it  exists already" in {
+  it should "Not allow addition of products in in memory collection if it  exists already" in {
     val result = Await.result(productRepo.addProduct(addProduct), 20 seconds)
     result shouldBe alreadyExistsLeft
   }
