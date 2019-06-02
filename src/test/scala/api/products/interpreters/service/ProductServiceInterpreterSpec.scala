@@ -17,17 +17,19 @@ class ProductServiceInterpreterSpec extends UnitSpec
   import Output._
 
   val productRepo = stub[ProductRepository[ProductMetadata]]
-  val productSvc = new ProductServiceInterpreter(productRepo)
+
 
   behavior of "addProduct"
 
   it should "return the ServiceResult with Pure value of Item when success" in {
-    (productRepo.addProduct(_)).when(addProduct).returns(Future.successful(Right(addProduct)))
+    val productSvc = new ProductServiceInterpreter(productRepo)
+    (productRepo.addProduct(_)).when(addProduct).returns(Future.successful(productAdded))
     val result = Await.result(productSvc.addItem(addProduct).value, 20 seconds)
     result shouldBe productCreated
   }
 
   it should "return the error message if the User already exists" in {
+    val productSvc = new ProductServiceInterpreter(productRepo)
     (productRepo.addProduct(_)).when(addProduct).returns(Future.successful(alreadyExistsLeft))
     val result = Await.result(productSvc.addItem(addProduct).value, 20 seconds)
     result shouldBe resultInUse
@@ -36,12 +38,14 @@ class ProductServiceInterpreterSpec extends UnitSpec
   behavior of "findProduct"
 
   it should "find the product for category if it exists" in {
-    (productRepo.findProduct(_)).when(addProduct.productCode).returns(Future.successful(Right(addProduct)))
+    val productSvc = new ProductServiceInterpreter(productRepo)
+    (productRepo.findProduct(_)).when(addProduct.productCode).returns(Future.successful(productAdded))
     val result = Await.result(productSvc.findItem(addProduct.productCode).value, 20 seconds)
     result shouldBe productCreated
   }
 
   it should "return error message if the user with email does not exist" in {
+    val productSvc = new ProductServiceInterpreter(productRepo)
     (productRepo.findProduct(_)).when(addProduct.productCode).returns(Future.successful(notFoundLeft))
     val result = Await.result(productSvc.findItem(addProduct.productCode).value, 20 seconds)
     result shouldBe resultNotFound

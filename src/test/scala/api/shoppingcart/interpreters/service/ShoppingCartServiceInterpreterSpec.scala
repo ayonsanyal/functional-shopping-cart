@@ -26,7 +26,7 @@ class ShoppingCartServiceInterpreterSpec extends UnitSpec
 
   behavior of "addToCart"
 
-  it should "return the added Item to Cart when product is found and is added successfully in the cart" in {
+  it should "return the added Item to Cart when if the product code is found and is added successfully in the cart" in {
     val addProduct = ProductMetadata("item1", "samsung", 400, "EUR")
     (productSvc.findItem(_)).when(itemInfo.itemCode).returns(EitherT {
       Future.successful(Pure(addProduct).asRight[ResultError])

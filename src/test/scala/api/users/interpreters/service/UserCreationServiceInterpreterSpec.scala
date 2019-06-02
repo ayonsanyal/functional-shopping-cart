@@ -19,17 +19,18 @@ class UserCreationServiceInterpreterTest
   import Output._
 
   val userRepo = stub[UserRepository[User]]
-  val userService = new UserCreationServiceInterpreter(userRepo)
 
   behavior of "createUser"
 
   it should "return the ServiceResult with Pure value of User when success" in {
+    val userService = new UserCreationServiceInterpreter(userRepo)
     (userRepo.createUser(_)).when(createUser).returns(Future.successful(Right(createUser)))
     val result = Await.result(userService.createUser(createUser).value, 20 seconds)
     result shouldBe userCreated
   }
 
   it should "return the error message if the User already exists" in {
+    val userService = new UserCreationServiceInterpreter(userRepo)
     (userRepo.createUser(_)).when(createUser).returns(Future.successful(alreadyExistsLeft))
     val result = Await.result(userService.createUser(createUser).value, 20 seconds)
     result shouldBe resultInUse
@@ -38,12 +39,14 @@ class UserCreationServiceInterpreterTest
   behavior of "findUser"
 
   it should "find the user for email if it exists" in {
+    val userService = new UserCreationServiceInterpreter(userRepo)
     (userRepo.findUser(_)).when(createUser.email).returns(Future.successful(Right(createUser)))
     val result = Await.result(userService.findUser(createUser.email).value, 20 seconds)
     result shouldBe userCreated
   }
 
   it should "return error message if the user with email does not exist" in {
+    val userService = new UserCreationServiceInterpreter(userRepo)
     (userRepo.findUser(_)).when(createUser.email).returns(Future.successful(notFoundLeft))
     val result = Await.result(userService.findUser(createUser.email).value, 20 seconds)
     result shouldBe resultNotFound
