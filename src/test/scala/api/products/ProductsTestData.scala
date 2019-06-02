@@ -1,7 +1,7 @@
 package api.products
 
-import api.common.entities.ApiErrors.{ AlreadyExists, ResultNotFound }
-import api.common.entities.{ ErrorMessages, Pure, ResultError }
+import api.common.entities.ApiErrors.{AlreadyExists, ResultNotFound, ServiceError}
+import api.common.entities.{ErrorMessages, Pure, ResultError}
 import api.products.entities.ProductMetadata
 import cats.implicits._
 
@@ -10,7 +10,15 @@ import scala.concurrent.Future
 trait ProductsTestData extends ErrorMessages {
 
   object Input {
-    val addProduct = ProductMetadata("mobile", "samsung", 400, "EUR")
+    val addProduct = ProductMetadata(productCode = "mobile", brand = "samsung", unitPrice = 400, currency = "EUR")
+    val addProductRequest = """
+                              |{
+                              |"productCode" : "mobile",
+                              |"brand" : "samsung",
+                              |"unitPrice" : 400,
+                              |"currency" : "EUR"
+                              |}
+                            """.stripMargin
   }
 
   object Output {
@@ -18,7 +26,7 @@ trait ProductsTestData extends ErrorMessages {
     val productCreated = Pure(addProduct).asRight[ResultError]
     val alreadyExists = AlreadyExists(ALREADY_EXISTS)
     val notFound = ResultNotFound(RESULT_NOT_FOUND)
-
+    val productAdded = addProduct.asRight[ServiceError]
     val resultErrorNotFound = ResultError(notFound)
     val resultErrorInUse = ResultError(alreadyExists)
 
@@ -33,14 +41,14 @@ trait ProductsTestData extends ErrorMessages {
 
     import Input._
     import Output._
-    val createPostResponse: Future[Either[ResultError, Pure[ProductMetadata]]] =
+    val createProductResponse: Future[Either[ResultError, Pure[ProductMetadata]]] =
       Future.successful(Pure(addProduct).asRight[ResultError])
-    val createPostError: Future[Either[ResultError, Pure[ProductMetadata]]] =
+    val createProductError: Future[Either[ResultError, Pure[ProductMetadata]]] =
       Future.successful(resultErrorInUse.asLeft[Pure[ProductMetadata]])
 
-    val findPostRight: Future[Either[ResultError, Pure[ProductMetadata]]] =
+    val findProductRight: Future[Either[ResultError, Pure[ProductMetadata]]] =
       Future.successful(Pure(addProduct).asRight[ResultError])
-    val findPostLeft: Future[Either[ResultError, Pure[ProductMetadata]]] =
+    val findProductLeft: Future[Either[ResultError, Pure[ProductMetadata]]] =
       Future.successful(resultNotFound)
   }
 
