@@ -16,6 +16,7 @@ trait UsersTestData extends ErrorMessages {
   object Output {
     import Input._
     val userCreated = Pure(createUser).asRight[ResultError]
+    val userFound = createUser.asRight[ResultError]
     val alreadyExists = AlreadyExists(ALREADY_EXISTS)
     val notFound = ResultNotFound(RESULT_NOT_FOUND)
 
@@ -27,6 +28,21 @@ trait UsersTestData extends ErrorMessages {
 
     val resultNotFound = resultErrorNotFound.asLeft[Pure[User]]
     val resultInUse = resultErrorInUse.asLeft[Pure[User]]
+
+    val routeRequestUser  =
+      """
+        |{
+        |"name" : "ayon",
+        |"email" : "ayon.sanyal@mail.com",
+        |"address" : {
+        |"street" : "Street1",
+        |"houseNumber" : 70,
+        |"postalCode" : 22807,
+        |"country" : "Germany"
+        |}
+        |}
+        |
+        """.stripMargin
   }
 
   object FutureData {
@@ -34,14 +50,14 @@ trait UsersTestData extends ErrorMessages {
     import Input._
     import Output._
 
-    val createPostResponse: Future[Either[ResultError, Pure[User]]] =
+    val createUserResponse: Future[Either[ResultError, Pure[User]]] =
       Future.successful(Pure(createUser).asRight[ResultError])
-    val createPostError: Future[Either[ResultError, Pure[User]]] =
+    val createUserError: Future[Either[ResultError, Pure[User]]] =
       Future.successful(resultErrorInUse.asLeft[Pure[User]])
 
-    val findPostRight: Future[Either[ResultError, Pure[User]]] =
+    val findUserRight: Future[Either[ResultError, Pure[User]]] =
       Future.successful(Pure(createUser).asRight[ResultError])
-    val findPostLeft: Future[Either[ResultError, Pure[User]]] =
+    val findUserLeft: Future[Either[ResultError, Pure[User]]] =
       Future.successful(resultNotFound)
   }
 
