@@ -1,16 +1,16 @@
 package api.users.interpreter.repository
 
+import api.common.entities.ApiErrors
 import api.common.entities.ApiErrors.{ AlreadyExists, ResultNotFound, ServiceError }
-import api.common.entities.{ ApiErrors, ErrorMessages }
 import api.users.domain.repository.UserRepository
-import api.users.entity.User
+import api.users.entity.{ User, UserErrorMessages }
 import cats.implicits._
 
 import scala.collection.mutable
 import scala.concurrent.{ ExecutionContext, Future }
 class UserRepositoryInterpreter(implicit executionContext: ExecutionContext)
   extends UserRepository[User]
-  with ErrorMessages {
+  with UserErrorMessages {
 
   /**
    * This is the place where all user details are stored.
