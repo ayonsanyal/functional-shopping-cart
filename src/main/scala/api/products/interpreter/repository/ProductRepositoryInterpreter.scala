@@ -1,17 +1,16 @@
 package api.products.interpreter.repository
 
+import api.common.entities.ApiErrors
 import api.common.entities.ApiErrors.{ AlreadyExists, ResultNotFound, ServiceError }
-import api.common.entities.{ ApiErrors, ErrorMessages }
 import api.products.domain.repository.ProductRepository
-import api.products.entities.ProductMetadata
-import api.users.entity.User
+import api.products.entities.{ ProductErrorMessages, ProductMetadata }
 import cats.implicits._
 
 import scala.collection.mutable
 import scala.concurrent.{ ExecutionContext, Future }
 
 class ProductRepositoryInterpreter(implicit ec: ExecutionContext) extends ProductRepository[ProductMetadata]
-  with ErrorMessages {
+  with ProductErrorMessages {
 
   /**
    * This is the place where all user details are stored.

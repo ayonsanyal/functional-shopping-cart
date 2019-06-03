@@ -1,13 +1,13 @@
 package api.products
 
-import api.common.entities.ApiErrors.{AlreadyExists, ResultNotFound, ServiceError}
-import api.common.entities.{ErrorMessages, Pure, ResultError}
-import api.products.entities.ProductMetadata
+import api.common.entities.ApiErrors.{ AlreadyExists, ResultNotFound, ServiceError }
+import api.common.entities.{ ErrorMessages, Pure, ResultError }
+import api.products.entities.{ ProductErrorMessages, ProductMetadata }
 import cats.implicits._
 
 import scala.concurrent.Future
 
-trait ProductsTestData extends ErrorMessages {
+trait ProductsTestData extends ProductErrorMessages {
 
   object Input {
     val addProduct = ProductMetadata(productCode = "mobile", brand = "samsung", unitPrice = 400, currency = "EUR")

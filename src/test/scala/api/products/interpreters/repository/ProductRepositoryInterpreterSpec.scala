@@ -13,8 +13,6 @@ class ProductRepositoryInterpreterSpec extends UnitSpec
   import Input._
   import Output._
 
-
-
   behavior of "addProduct"
 
   it should "allow addition of products in inmemory collection if it does not exist already" in {

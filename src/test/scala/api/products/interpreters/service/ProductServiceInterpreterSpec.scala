@@ -18,7 +18,6 @@ class ProductServiceInterpreterSpec extends UnitSpec
 
   val productRepo = stub[ProductRepository[ProductMetadata]]
 
-
   behavior of "addProduct"
 
   it should "return the ServiceResult with Pure value of Item when success" in {

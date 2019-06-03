@@ -1,12 +1,12 @@
 package api.products.routes
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.StatusCodes.{Conflict, Created}
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, MediaTypes}
+import akka.http.scaladsl.model.StatusCodes.{ Conflict, Created }
+import akka.http.scaladsl.model.{ ContentTypes, HttpEntity, MediaTypes }
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.stream.ActorMaterializer
 import akka.util.ByteString
-import api.common.entities.{ApiResponseSuccess, Error}
+import api.common.entities.{ ApiResponseSuccess, Error }
 import api.products.ProductsTestData
 import api.products.domain.service.ProductService
 import api.products.entities.ProductMetadata
@@ -14,7 +14,7 @@ import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.generic.auto._
 import cats.data.EitherT
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpec}
+import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpec }
 import cats.implicits._
 
 class ProductsRouteSpec extends WordSpec with Matchers with ScalatestRouteTest
@@ -37,8 +37,7 @@ class ProductsRouteSpec extends WordSpec with Matchers with ScalatestRouteTest
       val reqEntity = HttpEntity(MediaTypes.`application/json`, ByteString(addProductRequest))
       (service.addItem(_)).when(addProduct).returns(
         EitherT(
-          createProductResponse)
-      )
+          createProductResponse))
 
       Post("/api/v1/products", reqEntity) ~> productRoute.productRoutes ~> check {
         contentType should ===(ContentTypes.`application/json`)
@@ -51,8 +50,7 @@ class ProductsRouteSpec extends WordSpec with Matchers with ScalatestRouteTest
       val reqEntity = HttpEntity(MediaTypes.`application/json`, ByteString(addProductRequest))
       (service.addItem(_)).when(addProduct).returns(
         EitherT(
-          createProductError)
-      )
+          createProductError))
 
       Post("/api/v1/products", reqEntity) ~> productRoute.productRoutes ~> check {
         contentType should ===(ContentTypes.`application/json`)
