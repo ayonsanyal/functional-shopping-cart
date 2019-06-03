@@ -1,12 +1,12 @@
 package api.shoppingcart.routes
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.StatusCodes.{Created, NotFound}
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, MediaTypes}
+import akka.http.scaladsl.model.StatusCodes.{ Created, NotFound }
+import akka.http.scaladsl.model.{ ContentTypes, HttpEntity, MediaTypes }
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.stream.ActorMaterializer
 import akka.util.ByteString
-import api.common.entities.{ApiResponseSuccess, Error}
+import api.common.entities.{ ApiResponseSuccess, Error }
 import api.shoppingcart.ShoppingCartTestData
 import api.shoppingcart.domain.service.ShoppingCartService
 import api.shoppingcart.entities.Products
@@ -15,7 +15,7 @@ import cats.implicits._
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport._
 import io.circe.generic.auto._
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpec}
+import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpec }
 class ShoppingRoutesSpec extends WordSpec with Matchers with ScalatestRouteTest
   with MockFactory with BeforeAndAfterAll with ShoppingCartTestData {
 
@@ -36,8 +36,7 @@ class ShoppingRoutesSpec extends WordSpec with Matchers with ScalatestRouteTest
       val reqEntity = HttpEntity(MediaTypes.`application/json`, ByteString(itemInfoRequest))
       (service.addToCart(_)).when(itemInfo).returns(
         EitherT(
-          addedToCartFut)
-      )
+          addedToCartFut))
 
       Post("/api/v1/shoppingcart", reqEntity) ~> shoppingCartRoute.shoppingCartRoute ~> check {
         contentType should ===(ContentTypes.`application/json`)
@@ -50,8 +49,7 @@ class ShoppingRoutesSpec extends WordSpec with Matchers with ScalatestRouteTest
       val reqEntity = HttpEntity(MediaTypes.`application/json`, ByteString(itemInfoRequest))
       (service.addToCart(_)).when(itemInfo).returns(
         EitherT(
-          productNotFound)
-      )
+          productNotFound))
 
       Post("/api/v1/shoppingcart", reqEntity) ~> shoppingCartRoute.shoppingCartRoute ~> check {
         contentType should ===(ContentTypes.`application/json`)

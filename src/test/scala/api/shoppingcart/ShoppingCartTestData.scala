@@ -1,9 +1,9 @@
 package api.shoppingcart
 
-import api.common.entities.ApiErrors.{AlreadyExists, ResultNotFound}
-import api.common.entities.{ApiErrors, ErrorMessages, Pure, ResultError}
+import api.common.entities.ApiErrors.{ AlreadyExists, ResultNotFound }
+import api.common.entities.{ ApiErrors, ErrorMessages, Pure, ResultError }
 import api.products.entities.ProductMetadata
-import api.shoppingcart.entities.{ItemInfo, Products}
+import api.shoppingcart.entities.{ ItemInfo, Products, ShoppingCart }
 import cats.implicits._
 
 import scala.concurrent.Future
@@ -27,7 +27,9 @@ trait ShoppingCartTestData extends ErrorMessages {
     val addedToCart: Either[ResultError, Pure[ItemInfo]] = Pure(itemInfo).asRight[ResultError]
     val alreadyExists: ApiErrors.ServiceError = AlreadyExists(ALREADY_EXISTS)
     val notFound = ResultNotFound(RESULT_NOT_FOUND)
-
+    val shoppingCart = ShoppingCart(List(
+      Products(ItemInfo("item1", 4), "Item Dummy1", 400.0, "EUR"),
+      Products(ItemInfo("item2", 2), "Item Dummy2", 200.0, "EUR")), 600.0, "EUR")
     val resultErrorNotFound = ResultError(notFound)
     val resultErrorInUse = ResultError(alreadyExists)
 
@@ -41,7 +43,7 @@ trait ShoppingCartTestData extends ErrorMessages {
 
   object FutureData {
     import Output._
-    val addedToCartFut: Future[Either[ResultError, Pure[Products]]] =  Future.successful(productAddedPure)
+    val addedToCartFut: Future[Either[ResultError, Pure[Products]]] = Future.successful(productAddedPure)
     val createPostError: Future[Either[ResultError, Pure[ProductMetadata]]] =
       Future.successful(resultErrorInUse.asLeft[Pure[ProductMetadata]])
     val productNotFound = Future.successful(resultErrorNotFound.asLeft[Pure[Products]])

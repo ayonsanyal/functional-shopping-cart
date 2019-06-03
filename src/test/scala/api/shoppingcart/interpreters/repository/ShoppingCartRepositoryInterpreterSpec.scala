@@ -14,8 +14,6 @@ class ShoppingCartRepositoryInterpreterSpec extends UnitSpec
   import Input._
   import Output._
 
-
-
   behavior of "addToCart"
 
   it should "allow addition of products in shopping cart if it does not exist already" in {
@@ -38,9 +36,7 @@ class ShoppingCartRepositoryInterpreterSpec extends UnitSpec
     Await.result(shoppingCartRepo.addToCart(ItemInfo("item1", 4), 100, "Item Dummy1"), 20 seconds)
     Await.result(shoppingCartRepo.addToCart(ItemInfo("item2", 2), 100, "Item Dummy2"), 20 seconds)
 
-    Await.result(shoppingCartRepo.showCart(), 20 seconds) shouldBe Right(ShoppingCart(List(
-      Products(ItemInfo("item1", 4), "Item Dummy1", 400.0, "EUR"),
-      Products(ItemInfo("item2", 2), "Item Dummy2", 200.0, "EUR")), 600.0, "EUR"))
+    Await.result(shoppingCartRepo.showCart(), 20 seconds) shouldBe Right(shoppingCart)
   }
 
   it should "Not Display any items in a cart if cart is empty" in {
