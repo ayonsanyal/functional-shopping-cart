@@ -27,3 +27,6 @@ lazy val root = (project in file(".")).
       "org.scalamock" %% "scalamock" % "4.2.0" % Test
     )
   )
+
+scalacOptions ++= Seq("-language:postfixOps" // allow writing e.g. `5 seconds` with a space in between
+)
