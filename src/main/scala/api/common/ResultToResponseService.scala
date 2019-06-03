@@ -5,6 +5,12 @@ import api.common.entities.{ Pure, ResultError }
 import cats.implicits._
 trait ResultToResponseService {
 
+  /**
+    *
+    * @param input
+    * @tparam A
+    * @return
+    */
   def transformResult[A](input: Either[ServiceError, A]): Either[ResultError, Pure[A]] = {
     input match {
       case Right(value) => Pure(result = value).asRight[ResultError]

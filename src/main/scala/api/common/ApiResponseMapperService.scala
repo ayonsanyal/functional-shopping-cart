@@ -14,6 +14,15 @@ import scala.concurrent.ExecutionContext
 
 trait ApiResponseMapperService extends FailFastCirceSupport with ErrorMessages {
 
+  /**
+    * Maps the result from service to api json response based on nature of result.
+    * @param serviceResult
+    * @param methodType
+    * @param ec
+    * @param encoder
+    * @tparam A
+    * @return
+    */
   def mapToApiResponse[A](serviceResult: ServiceResult[A], methodType: String)(implicit ec: ExecutionContext, encoder: Encoder[A]): Route =
     onComplete(serviceResult.value) {
       case util.Success(Right(pure)) if methodType == "POST" => complete(ApiResponseSuccess[A](Created.intValue, pure.result.some).asJson)
