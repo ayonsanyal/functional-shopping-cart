@@ -70,7 +70,7 @@ and produces JSON .
  Note : Except checkout,all the end points are only POST based but it is in my
  ToDo list to create GET based end points also.
  
- Now to run, first open the terminal pointing to the root folder of this project.
+ Now to run, first clone this project then open the terminal pointing to the root folder of this project.
  
 #  Then write sbt clean compile 
 #  After its successful completion,write sbt test to run the tests.
